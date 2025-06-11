@@ -17,9 +17,8 @@ pipeline {
                       --add-host host.docker.internal:host-gateway \
                       -v $WORKSPACE/.zap:/zap/wrk:ro \
                       -v $WORKSPACE/results:/zap/reports \
-                      -w /zap/wrk \
                       ghcr.io/zaproxy/zaproxy:stable \
-                      zap.sh -cmd -port 8090 -autorun passive.yaml
+                      zap.sh -cmd -port 8090 -autorun /zap/wrk/passive.yaml
                 '''
             }
         }
