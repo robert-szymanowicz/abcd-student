@@ -52,7 +52,7 @@ pipeline {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
                     sh '''
                         mkdir -p results
-                        trufflehog git --branch main --repo . --json --fail --output results/secrets-trufflehog.json
+                        trufflehog git file://. --branch main --json --fail > results/secrets-trufflehog.json
                     '''
                 }
             }
