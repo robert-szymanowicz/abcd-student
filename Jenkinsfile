@@ -12,7 +12,14 @@ pipeline {
         stage('ZAP passive scan') {
             steps {
                 sh '''
+                    ls -la
                     mkdir -p results
+                    pwd
+                    echo $WORKSPACE
+                    ls -la $WORKSPACE
+                    ls -1 $WORKSPACE/.zap
+                    ls -1 $WORKSPACE/results
+                    cat $WORKSPACE/.zap/passive.yaml
                     docker run --rm --name zap \
                       --add-host host.docker.internal:host-gateway \
                       -v $WORKSPACE/.zap:/zap/wrk \
