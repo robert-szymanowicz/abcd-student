@@ -9,16 +9,16 @@ pipeline {
         stage('ZAP Passive Scan') {
             steps {
                 sh '''
-                    mkdir -p results
-                    docker run --rm \
-                        --add-host=host.docker.internal:host-gateway \
-                        -v .zap:/zap \
-                        -v $PWD/results:/zap/wrk \
-                        ghcr.io/zaproxy/zaproxy:stable \
-                        zap-baseline.py \
-                        -t http://host.docker.internal:3000 \
-                        -c /zap/rules/passive.yaml \
-                        -r /zap/wrk/zap-report.html
+                  mkdir -p $PWD/results
+                  docker run --rm \
+                    --add-host=host.docker.internal:host-gateway \
+                    -v $PWD/.zap:/zap/rules:ro \
+                    -v $PWD/results:/zap/wrk \
+                    ghcr.io/zaproxy/zaproxy:stable \
+                    zap-baseline.py \
+                    -t http://host.docker.internal:3000 \
+                    -c /zap/rules/passive.yaml \
+                    -r /zap/wrk/zap-report.html
                 '''
             }
         }
