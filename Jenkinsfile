@@ -12,8 +12,8 @@ pipeline {
                     mkdir -p results
                     docker run --rm \
                         --add-host=host.docker.internal:host-gateway \
-                        -v .zap:/zap:ro \
-                        -v $PWD/results:/zap/wrk:rw \
+                        -v .zap:/zap \
+                        -v $PWD/results:/zap/wrk \
                         ghcr.io/zaproxy/zaproxy:stable \
                         zap-baseline.py \
                         -t http://host.docker.internal:3000 \
