@@ -35,13 +35,15 @@
 pipeline {
     agent { label 'built-in' }
 
-    stage('SCA scan') {
-        steps {
-            catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-                sh '''
-                    mkdir -p results
-                    osv-scanner scan --lockfile package-lock.json --format json --output results/sca-osv-scanner.json
-                '''
+    stages {
+        stage('SCA scan') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                    sh '''
+                        mkdir -p results
+                        osv-scanner scan --lockfile package-lock.json --format json --output results/sca-osv-scanner.json
+                    '''
+                }
             }
         }
     }
