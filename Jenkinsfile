@@ -13,7 +13,7 @@ pipeline {
             steps {
                 sh '''
                     docker run --rm --name zap \
-                      --add-host host.docker.internal:host-gateway \
+                      --add-host=host.docker.internal:host-gateway \
                       -v /home/krot2ks/abcd-lab/abcd-student/.zap:/zap/wrk \
                       -v /home/krot2ks/abcd-lab/results:/zap/wrk/reports \
                       -w /zap/wrk \
