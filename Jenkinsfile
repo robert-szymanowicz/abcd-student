@@ -14,10 +14,12 @@ pipeline {
                 sh '''
                     mkdir -p results
                     docker run --rm --name zap \
-                      -v $WORKSPACE/.zap:/zap/wrk \
-                      -v $WORKSPACE/results:/zap/wrk/reports \
-                      --network host \
-                      ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/passive.yaml
+                      --add-host host.docker.internal:host-gateway \
+                      -v $WORKSPACE/.zap:/zap/wrk:ro \
+                      -v $WORKSPACE/results:/zap/reports \
+                      -w /zap/wrk \
+                      ghcr.io/zaproxy/zaproxy:stable \
+                      zap.sh -cmd -port 8090 -autorun passive.yaml
                 '''
             }
         }
