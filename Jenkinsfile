@@ -34,8 +34,6 @@
 // }
 pipeline {
     agent { label 'built-in' }
-
-    stages {
         stage('SCA scan') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
@@ -47,7 +45,7 @@ pipeline {
             }
         }
 
-    stage('Secrets scan') {
+        stage('Secrets scan') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
                     sh '''
@@ -58,7 +56,6 @@ pipeline {
             }
         }
     }
-}
 
     post {
         always {
