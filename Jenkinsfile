@@ -42,5 +42,4 @@ pipeline {
                 echo 'Archiving results...'
                 archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
         }
-    }
 }
