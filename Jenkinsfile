@@ -17,7 +17,7 @@ pipeline {
                       -v $WORKSPACE/.zap:/zap/wrk \
                       -v $WORKSPACE/results:/zap/wrk/reports \
                       --network host \
-                      ghcr.io/zaproxy/zaproxy:stable zap.sh -autorun /zap/wrk/passive.yaml
+                      ghcr.io/zaproxy/zaproxy:stable zap.sh -cmd -autorun /zap/wrk/passive.yaml
                 '''
             }
         }
