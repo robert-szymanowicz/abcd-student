@@ -28,7 +28,7 @@ pipeline {
     post {
         always {
             sh 'docker rm -f juice-shop || true'
-            archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
+            archiveArtifacts artifacts: 'results/*', fingerprint: true, allowEmptyArchive: true
         }
     }
 }
