@@ -1,38 +1,33 @@
+```
 pipeline {
     agent any
+    options {
+        skipDefaultCheckout(true)
+    }
     stages {
         stage('Start Juice Shop') {
             steps {
                 sh 'docker run -d --rm --name juice-shop -p 3000:3000 bkimminich/juice-shop'
             }
         }
-        stage('ZAP Passive Scan') {
+        stage('ZAP passive scan') {
             steps {
                 sh '''
-                  mkdir -p $PWD/results
-                  docker run --rm \
-                    --add-host=host.docker.internal:host-gateway \
-                    -v .zap:/zap/rules:ro \
-                    -v $PWD/results:/zap/wrk \
-                    ghcr.io/zaproxy/zaproxy:stable \
-                    zap-baseline.py \
-                    -t http://host.docker.internal:3000 \
-                    -c /zap/rules/passive.yaml \
-                    -r /zap/wrk/zap-report.html
+                    mkdir -p results
+                    docker run --rm --name zap \
+                      -v $WORKSPACE/.zap:/zap/wrk \
+                      -v $WORKSPACE/results:/zap/wrk/reports \
+                      --network host \
+                      ghcr.io/zaproxy/zaproxy:stable zap.sh -autorun /zap/wrk/passive.yaml
                 '''
-            }
-        }
-        stage('Stop Juice Shop') {
-            steps {
-                sh 'docker rm -f juice-shop || true'
             }
         }
     }
     post {
         always {
+            sh 'docker stop juice-shop || true'
             archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
         }
     }
 }
-
-
+```
