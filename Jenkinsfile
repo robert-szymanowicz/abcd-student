@@ -30,4 +30,3 @@ pipeline {
             archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
         }
     }
-}
