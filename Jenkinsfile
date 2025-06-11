@@ -57,6 +57,17 @@ pipeline {
                 }
             }
         }
+
+        stage('SAST scan') {
+            steps {
+                catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                    sh '''
+                        mkdir -p results
+                        semgrep scan --config auto --json --output results/static-semgrep.json
+                    '''
+                }
+            }
+        }
     }
 
     post {
