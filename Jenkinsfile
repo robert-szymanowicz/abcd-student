@@ -34,6 +34,8 @@
 // }
 pipeline {
     agent { label 'built-in' }
+
+    stages {
         stage('SCA scan') {
             steps {
                 catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
