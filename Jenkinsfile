@@ -1,8 +1,8 @@
-pipeline {
-    agent any
-    options {
-        skipDefaultCheckout(true)
-    }
+// pipeline {
+//     agent any
+//     options {
+//         skipDefaultCheckout(true)
+//     }
 //     stages {
 //         stage('Start Juice Shop') {
 //             steps {
@@ -31,15 +31,24 @@ pipeline {
 //             archiveArtifacts artifacts: '/home/krot2ks/abcd-lab/results/*', fingerprint: true, allowEmptyArchive: true
 //         }
 //     }
+// }
+pipeline {
+    agent { label 'built-in' }
 
+    stages {
         stage('SCA scan') {
             steps {
-                sh 'osv-scanner scan --lockfile package-lock.json --format json --output results/sca-osv-scanner.json'
+                sh '''
+                    mkdir -p results
+                    osv-scanner scan --lockfile package-lock.json --format json --output results/sca-osv-scanner.json
+                '''
             }
         }
-        post {
-            always {
-                echo 'Archiving results...'
-                archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
+    }
+
+    post {
+        always {
+            archiveArtifacts artifacts: 'results/**/*', fingerprint: true, allowEmptyArchive: true
         }
+    }
 }
