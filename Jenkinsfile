@@ -3,10 +3,16 @@ pipeline {
     options {
         skipDefaultCheckout(true)
     }
-    stages {
         stage('Start Juice Shop') {
             steps {
-                sh 'docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop'
+                sh '''
+                    docker rm -f juice-shop || true
+                    docker run -d --name juice-shop -p 3000:3000 bkimminich/juice-shop
+                    for i in {1..30}; do
+                        curl -s http://localhost:3000/ >/dev/null && break
+                        sleep 2
+                    done
+                '''
             }
         }
         stage('ZAP passive scan') {
