@@ -12,7 +12,7 @@ pipeline {
                   mkdir -p $PWD/results
                   docker run --rm \
                     --add-host=host.docker.internal:host-gateway \
-                    -v $PWD/.zap:/zap/rules:ro \
+                    -v .zap:/zap/rules:ro \
                     -v $PWD/results:/zap/wrk \
                     ghcr.io/zaproxy/zaproxy:stable \
                     zap-baseline.py \
